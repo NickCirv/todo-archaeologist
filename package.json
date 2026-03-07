@@ -1,0 +1,19 @@
+{
+  "name": "todo-archaeologist",
+  "version": "1.0.0",
+  "description": "Dig through your codebase to find the oldest TODO comments and create a timeline of broken promises.",
+  "main": "index.js",
+  "bin": {
+    "todo-archaeologist": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "node index.js . --stats"
+  },
+  "keywords": ["todo", "fixme", "technical-debt", "git", "cli", "archaeology", "developer-tools"],
+  "author": "NickCirv",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  }
+}
