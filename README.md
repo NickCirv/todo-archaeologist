@@ -1,51 +1,19 @@
-![Banner](banner.svg)
+![todo-archaeologist — excavate every TODO, FIXME and HACK in your codebase, dated by git blame, sorted oldest first](assets/banner.png)
 
-```
-  ╔══════════════════════════════════════════════════╗
-  ║   🏛️  TODO ARCHAEOLOGIST                         ║
-  ║   Excavating the ruins of broken promises        ║
-  ╚══════════════════════════════════════════════════╝
-```
+<div align="center">
 
-Zero-dependency Node.js CLI that digs through your codebase, finds every TODO/FIXME/HACK, uses `git blame` to date them, and presents your technical debt as the archaeological ruin it truly is.
+**Surface the oldest unresolved promises in your codebase — and make the age impossible to ignore.**
 
-## Install
+![license](https://img.shields.io/badge/license-MIT-blue?labelColor=0B0A09)
+![dependencies](https://img.shields.io/badge/dependencies-0-brightgreen?labelColor=0B0A09)
+![node](https://img.shields.io/badge/node-%3E%3D14-brightgreen?labelColor=0B0A09)
+![keywords](https://img.shields.io/badge/debt%20keywords-6-FB923C?labelColor=0B0A09)
 
-```bash
-npm install -g todo-archaeologist
-```
+</div>
 
-Or run without installing:
+---
 
-```bash
-npx todo-archaeologist [path]
-```
-
-## Usage
-
-```bash
-# Scan current directory
-
-[![npm version](https://img.shields.io/npm/v/todo-archaeologist.svg)](https://www.npmjs.com/package/todo-archaeologist)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D14-brightgreen.svg)](https://nodejs.org)
-[![Zero Dependencies](https://img.shields.io/badge/dependencies-0-blue.svg)](https://www.npmjs.com/package/todo-archaeologist)
-todo-archaeologist
-
-# Scan a specific path
-todo-archaeologist ./src
-
-# Show only TODOs older than 1 year (the hall of shame)
-todo-archaeologist --shame
-
-# Show stats only, no timeline
-todo-archaeologist --stats
-
-# Combine
-todo-archaeologist ./src --shame --stats
-```
-
-## Example Output
+Most TODO scanners count comments. `todo-archaeologist` asks *how old are they?* — then answers with git blame timestamps, sorted from oldest survivor to newest arrival, with age-graded commentary that escalates from "Fresh. There's still hope." to "This TODO is a historical monument. Preserve it."
 
 ```
   🏛️  TODO ARCHAEOLOGIST
@@ -82,10 +50,52 @@ todo-archaeologist ./src --shame --stats
            Future developers will study these ruins."
 ```
 
-## Age Commentary
+## Install
 
-| Age | Verdict |
-|-----|---------|
+No install required — runs straight from GitHub with zero dependencies:
+
+```bash
+npx github:NickCirv/todo-archaeologist
+```
+
+## Usage
+
+```bash
+# Scan current directory
+npx github:NickCirv/todo-archaeologist
+
+# Scan a specific path
+npx github:NickCirv/todo-archaeologist ./src
+
+# Show only TODOs older than 1 year (the hall of shame)
+npx github:NickCirv/todo-archaeologist --shame
+
+# Show stats only, no timeline
+npx github:NickCirv/todo-archaeologist --stats
+
+# Combine: shame mode + stats on a specific path
+npx github:NickCirv/todo-archaeologist ./src --shame --stats
+```
+
+| Flag | Description |
+|------|-------------|
+| `[path]` | Directory to scan (default: current directory) |
+| `--shame` | Show only TODOs older than 1 year |
+| `--stats` | Show aggregate statistics only — no per-item timeline |
+| `--help` | Show help |
+
+## How it works
+
+1. **Walk the tree** — recursively scans all code files, skipping `node_modules`, `.git`, `dist`, `build`, and other non-source directories.
+2. **Match debt keywords** — flags lines containing `TODO`, `FIXME`, `HACK`, `XXX`, `TEMP`, or `WORKAROUND`.
+3. **Date via git blame** — for each matching line, runs `git blame --porcelain` to get the exact commit timestamp when that line was last touched.
+4. **Sort oldest first** — undated items (repos without git) appear at the end.
+5. **Verdict** — produces an age-graded final verdict based on average debt age across the whole codebase.
+
+### Age commentary scale
+
+| Age | Commentary |
+|-----|------------|
 | < 1 month | "Fresh. There's still hope." |
 | 1–6 months | "Starting to age. Like milk." |
 | 6–12 months | "This TODO has seen seasons change." |
@@ -94,39 +104,26 @@ todo-archaeologist ./src --shame --stats
 | 3–5 years | "This TODO has survived multiple framework wars." |
 | 5+ years | "This TODO is a historical monument. Preserve it." |
 
-## Detected Keywords
+### Detected keywords
 
 `TODO` · `FIXME` · `HACK` · `XXX` · `TEMP` · `WORKAROUND`
 
-## Skipped Directories
+### Scanned file types
 
-`node_modules` · `.git` · `dist` · `build` · `vendor` · `.next` · `.nuxt` · `coverage` · `out` · `tmp`
+JS/TS/JSX/TSX/MJS · Python · Ruby · Go · Rust · Java · Kotlin · Swift · C/C++ · C# · PHP · Vue · Svelte · Astro · Shell · CSS/SCSS/Less · HTML · YAML/TOML/INI · SQL
 
-## Technical Details
+### Skipped directories
 
-- **Zero dependencies** — pure Node.js stdlib (`fs`, `path`, `child_process`)
-- **Git-aware** — uses `git blame --porcelain` to date each TODO line precisely
-- **Graceful fallback** — works without git (skips age detection, shows file-only results)
-- **30+ file types** — JS/TS, Python, Ruby, Go, Rust, Java, PHP, CSS, HTML, YAML, SQL, and more
-- **Single file** — `index.js` under 300 lines
-- **Node 14+** — uses generators, optional catch binding
+`node_modules` · `.git` · `dist` · `build` · `vendor` · `.next` · `.nuxt` · `coverage` · `out` · `tmp` · `.turbo` · `.svelte-kit`
 
-## You Might Also Like
+## What it is NOT
 
-- **github.com/NickCirv** — more tools for developers who ship
-
-## Contributing
-
-PRs welcome! If you have a funny idea or improvement:
-
-1. Fork the repo
-2. Create your feature branch (`git checkout -b feature/amazing-idea`)
-3. Commit your changes
-4. Push to the branch (`git push origin feature/amazing-idea`)
-5. Open a Pull Request
-
-Found a bug? [Open an issue](https://github.com/NickCirv/todo-archaeologist/issues).
+- **Not a linter or formatter.** It reads and reports — it never modifies your code.
+- **Not a replacement for a real debt-tracking system.** Use it to surface which files need attention; track the work in your issue tracker.
+- **Not git-required.** Without a git repo it skips age detection and reports file locations only.
 
 ---
 
-If this made you mass-exhale through your nose, mass-hit that star button.
+<div align="center">
+<sub>Zero dependencies · Node 14+ · MIT · by <a href="https://github.com/NickCirv">NickCirv</a></sub>
+</div>
