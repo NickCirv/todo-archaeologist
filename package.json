@@ -8,12 +8,12 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "node index.js . --stats"
+    "test": "node --test"
   },
   "keywords": ["todo", "fixme", "technical-debt", "git", "cli", "archaeology", "developer-tools"],
   "author": "NickCirv",
   "license": "MIT",
   "engines": {
-    "node": ">=14"
+    "node": ">=20"
   }
 }
